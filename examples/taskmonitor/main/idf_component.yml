@@ -1,0 +1,4 @@
+dependencies:
+  leeebo/sysmonitor:
+    version: "*"
+    override_path: "../../../"

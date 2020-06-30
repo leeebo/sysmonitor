@@ -1,0 +1,11 @@
+menu "Sysmonitor Configuration"
+
+    config TASKMONITOR_MAX_TASKS
+        int "Maximum number of tasks being monitored"
+        default 30
+
+    config TASKMONITOR_DUMP_INTERVAL
+        int "Task monitor dump interval (in seconds)"
+        default 3
+
+endmenu

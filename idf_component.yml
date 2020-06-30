@@ -1,0 +1,6 @@
+version: "0.1.0"
+description: "Component for monitoring system resources"
+repository: https://github.com/leeebo/sysmonitor
+issues: https://github.com/leeebo/sysmonitor/issues
+dependencies:
+  idf: ">=4.4"
