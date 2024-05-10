@@ -1,5 +1,7 @@
 ## Sysmonitor Component
 
+[![Component Registry](https://components.espressif.com/components/leeebo/sysmonitor/badge.svg)](https://components.espressif.com/components/leeebo/sysmonitor) [![Build examples](https://github.com/leeebo/sysmonitor/actions/workflows/build_examples.yml/badge.svg?branch=master)](https://github.com/leeebo/sysmonitor/actions/workflows/build_examples.yml)
+
 - [x] taskmonitor
 - [ ] memmonitor
 - [ ] periphmonitor
