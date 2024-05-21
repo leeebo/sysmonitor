@@ -10,6 +10,7 @@
 #include "esp_log.h"
 #include "esp_system.h"
 #include "taskmonitor.h"
+#include "memmonitor.h"
 
 #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 0, 0)
 #include "esp_spi_flash.h"
@@ -49,7 +50,7 @@ void app_main(void)
     printf("%" PRIu32 "MB %s flash\n", flash_size / (uint32_t)(1024 * 1024),
            (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
 #endif
-
+    memmonitor_dump_all();
     /* Print task information */
     taskmonitor_init();
     taskmonitor_start();

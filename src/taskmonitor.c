@@ -33,6 +33,15 @@ static StaticTimer_t timer_stack;
 static bool initialized = false; //singleton
 static TimerHandle_t timer;
 
+const char *task_state[] = {
+    "Running",
+    "Ready",
+    "Blocked",
+    "Suspend",
+    "Deleted",
+    "Invalid"
+};
+
 void taskmonitor_init()
 {
 	if (initialized) {
@@ -91,14 +100,20 @@ static void task_monitor_cb(TimerHandle_t timer)
     float f = 100.0 / totalDelta;
 
     ESP_LOGI(TAG,"-----------------Task Dump Start-----------------");
-    printf("|Load\tStack left\tName\t\tPRI|\n");
+    printf("|Load\tStack\tState\tCoreID\tPRI\tName|\n");
 
     for (uint32_t i = 0; i < taskCount; i++) {
         TaskStatus_t *stats = &taskStats[i];
         task_data_t *previousTaskData = getPreviousTaskData(stats->xTaskNumber);
         uint32_t taskRunTime = stats->ulRunTimeCounter;
         float load = f * (taskRunTime - previousTaskData->ulRunTimeCounter);
-        printf("|%.2f\t%" PRIu32 "\t\t%s\t\t%u|\n", load, stats->usStackHighWaterMark, stats->pcTaskName, stats->uxBasePriority);
+    #if ( ( configUSE_CORE_AFFINITY == 1 ) && ( configNUMBER_OF_CORES > 1 ) )
+        printf("|%.2f\t%" PRIu32 "\t%s\t%0x02X\t%u\t%s|\n", load, stats->usStackHighWaterMark, 
+        task_state[stats->eCurrentState], stats->uxCoreAffinityMask, stats->uxBasePriority, stats->pcTaskName);
+    #else
+        printf("|%.2f\t%" PRIu32 "\t%s\t%d\t%u\t%s|\n", load, stats->usStackHighWaterMark,
+        task_state[stats->eCurrentState], stats->xCoreID, stats->uxBasePriority, stats->pcTaskName);
+    #endif
         previousTaskData->ulRunTimeCounter = taskRunTime;
     }
     ESP_LOGI(TAG,"Total Free heap: %" PRIu32 "", esp_get_free_heap_size());
